@@ -1,8 +1,10 @@
-package com.yuri_berezhnoy.noteapp;
+package com.yuri_berezhnoy.noteapp.core;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.yuri_berezhnoy.noteapp.R;
 
 public class MainActivity extends AppCompatActivity {
 
