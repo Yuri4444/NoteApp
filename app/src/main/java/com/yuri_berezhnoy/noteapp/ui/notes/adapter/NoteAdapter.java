@@ -13,6 +13,16 @@ import com.yuri_berezhnoy.noteapp.ui.notes.model.NoteUi;
 
 public class NoteAdapter extends ListAdapter<NoteUi, NoteViewHolder> {
 
+    private Listener listener;
+
+    public interface Listener {
+        void onClick(int position);
+    }
+
+    public void setListener(Listener listener) {
+        this.listener = listener;
+    }
+
     public NoteAdapter() {
         super(new NoteDiffUtil());
     }
@@ -25,7 +35,7 @@ public class NoteAdapter extends ListAdapter<NoteUi, NoteViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
-        holder.bind(getItem(position));
+    public void onBindViewHolder(@NonNull NoteViewHolder holder, final int position) {
+        holder.bind(getItem(position), listener);
     }
 }

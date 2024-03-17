@@ -3,17 +3,41 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/margin_8"
+    android:layout_marginTop="@dimen/margin_8"
+    android:layout_marginEnd="@dimen/margin_8">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvTitle"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tvContent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_8"
+        android:layout_marginEnd="@dimen/margin_8"
+        android:textColor="@color/black"
         android:textSize="@dimen/text_18"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ivMenu"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Some title note" />
+        tools:text="fsafasf" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_8"
+        app:layout_constraintBottom_toTopOf="@+id/viewLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_options" />
+
+    <View
+        android:id="@+id/viewLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/margin_8"
+        android:background="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvContent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

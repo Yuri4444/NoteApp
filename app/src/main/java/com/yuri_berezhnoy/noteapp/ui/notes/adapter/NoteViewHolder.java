@@ -10,13 +10,16 @@ public class NoteViewHolder extends RecyclerView.ViewHolder {
 
     private final ItemNoteBinding binding;
 
-
     public NoteViewHolder(@NonNull ItemNoteBinding binding) {
         super(binding.getRoot());
         this.binding = binding;
     }
 
-    void bind(NoteUi item) {
-        binding.tvTitle.setText(item.content);
+    void bind(NoteUi item, NoteAdapter.Listener listener) {
+        binding.tvContent.setText(item.content);
+
+        binding.getRoot().setOnClickListener(v -> {
+            listener.onClick(item.id);
+        });
     }
 }

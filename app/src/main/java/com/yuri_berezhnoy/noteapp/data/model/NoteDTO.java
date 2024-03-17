@@ -1,29 +1,25 @@
-package com.yuri_berezhnoy.noteapp.ui.notes.model;
+package com.yuri_berezhnoy.noteapp.data.model;
 
 import androidx.annotation.NonNull;
 
 import java.util.Objects;
 
-public class NoteUi {
+public class NoteDTO {
     public int id;
     public String content;
 
-    public NoteUi(int id, String content) {
+    public NoteDTO(int id, String content) {
         this.id = id;
         this.content = content;
-    }
-
-    public Boolean match(@NonNull NoteUi source) {
-        return source.id == id;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof NoteUi noteUi)) return false;
+        if (!(o instanceof NoteDTO NoteDTO)) return false;
 
-        if (id != noteUi.id) return false;
-        return Objects.equals(content, noteUi.content);
+        if (id != NoteDTO.id) return false;
+        return Objects.equals(content, NoteDTO.content);
     }
 
     @Override
@@ -36,7 +32,7 @@ public class NoteUi {
     @NonNull
     @Override
     public String toString() {
-        return "NoteUi{" +
+        return "NoteDTO{" +
                 "id=" + id +
                 ", content='" + content + '\'' +
                 '}';

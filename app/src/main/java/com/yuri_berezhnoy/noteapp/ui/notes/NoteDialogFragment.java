@@ -1,6 +1,5 @@
 package com.yuri_berezhnoy.noteapp.ui.notes;
 
-import android.app.Dialog;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -8,24 +7,32 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 
 import com.yuri_berezhnoy.noteapp.R;
 import com.yuri_berezhnoy.noteapp.databinding.DialogNoteBinding;
+import com.yuri_berezhnoy.noteapp.databinding.FragmentNotesBinding;
+import com.yuri_berezhnoy.noteapp.ui.NotesViewModel;
+import com.yuri_berezhnoy.noteapp.ui.base.dialog.AbsDialogFragment;
+import com.yuri_berezhnoy.noteapp.ui.notes.model.NoteUi;
 
 import java.util.Objects;
 
-public class NoteDialogFragment extends DialogFragment {
+public class NoteDialogFragment extends AbsDialogFragment<NotesViewModel, FragmentNotesBinding> {
 
     private DialogNoteBinding binding;
 
-    @NonNull
     @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        return super.onCreateDialog(savedInstanceState);
+    protected FragmentNotesBinding getViewBinding() {
+        return FragmentNotesBinding.inflate(getLayoutInflater());
+    }
+
+    @Override
+    protected Class<NotesViewModel> provideViewModelClass() {
+        return NotesViewModel.class;
     }
 
     @Nullable
@@ -38,11 +45,21 @@ public class NoteDialogFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        binding.btnSave.setOnClickListener(v -> {
+            viewModel.add(new NoteUi(0, binding.etContent.getText().toString()));
+            dismiss();
+        });
+
         DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
         Rect rect = new Rect(0, 0, dm.widthPixels, dm.heightPixels);
         float percentWidth = rect.width() * 0.9f;
 
-        Objects.requireNonNull(getDialog().getWindow()).setLayout((int) percentWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
-        getDialog().getWindow().setBackgroundDrawableResource(R.drawable.dialog_rounded_bg);
+        Window window = Objects.requireNonNull(getDialog()).getWindow();
+
+        if (window != null) {
+            window.setLayout((int) percentWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
+            window.setBackgroundDrawableResource(R.drawable.dialog_rounded_bg);
+        }
     }
 }

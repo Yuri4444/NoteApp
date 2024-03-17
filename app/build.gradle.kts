@@ -45,4 +45,18 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    //RxJava
+    implementation(libs.rxandroid)
+    implementation(libs.rxjava)
+
+    //Dagger2
+//    implementation(libs.android.hilt)
+//    annotationProcessor(libs.android.hilt.compiler)
+
+    implementation(libs.dagger)
+    annotationProcessor(libs.dagger.compiler)
+    implementation(libs.dagger.android)
+    implementation(libs.dagger.android.support)
+    annotationProcessor(libs.dagger.android.processor)
 }
