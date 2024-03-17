@@ -11,6 +11,9 @@ import android.database.sqlite.SQLiteDatabase;
 import com.yuri_berezhnoy.noteapp.ui.notes.model.NoteUi;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.Observable;
 
 public class DatabaseManager {
     private final DatabaseHelper databaseHelper;
@@ -37,7 +40,7 @@ public class DatabaseManager {
         database.insert(TABLE_NAME, null, values);
     }
 
-    public ArrayList<NoteUi> notes() {
+    public Observable<List<NoteUi>> notes() {
         readDatabase();
         ArrayList<NoteUi> newList = new ArrayList<>();
 
@@ -59,7 +62,7 @@ public class DatabaseManager {
         }
         cursor.close();
 
-        return newList;
+        return Observable.fromCallable(() -> newList);
     }
 
     public void close() {

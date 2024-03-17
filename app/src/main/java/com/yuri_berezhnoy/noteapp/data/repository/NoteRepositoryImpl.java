@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+
 public class NoteRepositoryImpl implements NoteRepository {
 
     DatabaseManager databaseManager;
@@ -18,7 +20,7 @@ public class NoteRepositoryImpl implements NoteRepository {
     }
 
     @Override
-    public List<NoteUi> notes() {
+    public Observable<List<NoteUi>> notes() {
         return databaseManager.notes();
     }
 

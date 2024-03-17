@@ -1,15 +1,19 @@
 package com.yuri_berezhnoy.noteapp.ui;
 
-import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.MutableLiveData;
 
 import com.yuri_berezhnoy.noteapp.domain.NoteRepository;
+import com.yuri_berezhnoy.noteapp.ui.base.AbsViewModel;
 import com.yuri_berezhnoy.noteapp.ui.notes.model.NoteUi;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-public class NotesViewModel extends ViewModel {
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
+public class NotesViewModel extends AbsViewModel {
 
     NoteRepository noteRepository;
 
@@ -20,8 +24,18 @@ public class NotesViewModel extends ViewModel {
         this.noteRepository = noteRepository;
     }
 
-    List<NoteUi> notes() {
-        return noteRepository.notes();
+    public MutableLiveData<List<NoteUi>> notes = new MutableLiveData<>();
+
+    void notes() {
+        disposable.add(noteRepository.notes()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        result -> notes.setValue(result),
+                        error -> {
+
+                        })
+        );
     }
 
     public void add(NoteUi noteUi) {

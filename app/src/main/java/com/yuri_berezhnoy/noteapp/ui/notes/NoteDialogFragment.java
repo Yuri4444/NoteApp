@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,8 +48,13 @@ public class NoteDialogFragment extends AbsDialogFragment<NotesViewModel, Fragme
         super.onViewCreated(view, savedInstanceState);
 
         binding.btnSave.setOnClickListener(v -> {
-            viewModel.add(new NoteUi(0, binding.etContent.getText().toString()));
-            dismiss();
+            String inputContent = binding.etContent.getText().toString();
+            if (!inputContent.isBlank()) {
+                viewModel.add(new NoteUi(0, binding.etContent.getText().toString()));
+                dismiss();
+            } else {
+                Toast.makeText(getContext(), "Please enter text", Toast.LENGTH_LONG).show();
+            }
         });
 
         DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();

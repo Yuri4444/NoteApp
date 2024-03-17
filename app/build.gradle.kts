@@ -59,4 +59,8 @@ dependencies {
     implementation(libs.dagger.android)
     implementation(libs.dagger.android.support)
     annotationProcessor(libs.dagger.android.processor)
+
+    implementation(libs.lifecycle.extensions)
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.lifecycle.common.java8)
 }

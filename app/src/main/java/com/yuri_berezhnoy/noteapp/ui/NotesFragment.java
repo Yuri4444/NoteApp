@@ -28,17 +28,22 @@ public class NotesFragment extends AbsFragment<NotesViewModel, FragmentNotesBind
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        NoteAdapter adapter = new NoteAdapter();
+        NoteAdapter adapter = new NoteAdapter(
+                onEditClick -> {
+                    Log.e("RRR", "onEditClick " + onEditClick);
+                },
+                onDeleteClick -> {
+                    Log.e("RRR", "onDeleteClick " + onDeleteClick);
+                });
         binding.rvNotes.setAdapter(adapter);
-        adapter.submitList(viewModel.notes());
 
-        adapter.setListener(position -> {
-            Log.e("RRR", "Hello " + position);
-        });
+        viewModel.notes.observe(getViewLifecycleOwner(), adapter::submitList);
 
         binding.fabNote.setOnClickListener(v -> {
             NoteDialogFragment dialog = new NoteDialogFragment();
             dialog.show(getChildFragmentManager(), "");
         });
+
+        viewModel.notes();
     }
 }

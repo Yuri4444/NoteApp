@@ -3,4 +3,7 @@
     <string name="add_note">Add note</string>
     <string name="add_new_note">Add new note</string>
     <string name="update_your_note">Update your note</string>
+    <string name="share">Share</string>
+    <string name="edit">Edit</string>
+    <string name="remove">Remove</string>
 </resources>

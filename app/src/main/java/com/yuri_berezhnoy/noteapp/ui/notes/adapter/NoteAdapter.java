@@ -13,18 +13,24 @@ import com.yuri_berezhnoy.noteapp.ui.notes.model.NoteUi;
 
 public class NoteAdapter extends ListAdapter<NoteUi, NoteViewHolder> {
 
-    private Listener listener;
+    private final OnEditClickListener onEditClickListener;
+    private final OnDeleteClickListener onDeleteClickListener;
 
-    public interface Listener {
-        void onClick(int position);
+    public interface OnEditClickListener {
+        void onEditClick(int id);
     }
 
-    public void setListener(Listener listener) {
-        this.listener = listener;
+    public interface OnDeleteClickListener {
+        void onDeleteClick(int id);
     }
 
-    public NoteAdapter() {
+    public NoteAdapter(
+            OnEditClickListener onEditClickListener,
+            OnDeleteClickListener onDeleteClickListener
+    ) {
         super(new NoteDiffUtil());
+        this.onEditClickListener = onEditClickListener;
+        this.onDeleteClickListener = onDeleteClickListener;
     }
 
     @NonNull
@@ -36,6 +42,6 @@ public class NoteAdapter extends ListAdapter<NoteUi, NoteViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull NoteViewHolder holder, final int position) {
-        holder.bind(getItem(position), listener);
+        holder.bind(getItem(position), onEditClickListener, onDeleteClickListener);
     }
 }

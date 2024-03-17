@@ -4,9 +4,14 @@ import com.yuri_berezhnoy.noteapp.ui.notes.model.NoteUi;
 
 import java.util.List;
 
+import io.reactivex.Observable;
+
 public interface NoteRepository {
-    List<NoteUi> notes();
+    Observable<List<NoteUi>> notes();
+
     void add(NoteUi noteUi);
+
     void update(String content);
+
     void remove(String content);
 }
