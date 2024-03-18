@@ -22,7 +22,7 @@ import com.yuri_berezhnoy.noteapp.ui.notes.model.NoteUi;
 
 import java.util.Objects;
 
-public class NoteDialogFragment extends AbsDialogFragment<NotesViewModel, FragmentNotesBinding> {
+public class NoteDialogFragment extends AbsDialogFragment<NoteDialogViewModel, FragmentNotesBinding> {
 
     private DialogNoteBinding binding;
 
@@ -32,8 +32,8 @@ public class NoteDialogFragment extends AbsDialogFragment<NotesViewModel, Fragme
     }
 
     @Override
-    protected Class<NotesViewModel> provideViewModelClass() {
-        return NotesViewModel.class;
+    protected Class<NoteDialogViewModel> provideViewModelClass() {
+        return NoteDialogViewModel.class;
     }
 
     @Nullable

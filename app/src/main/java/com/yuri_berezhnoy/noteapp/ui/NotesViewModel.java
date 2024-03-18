@@ -38,7 +38,7 @@ public class NotesViewModel extends AbsViewModel {
         );
     }
 
-    public void add(NoteUi noteUi) {
-        noteRepository.add(noteUi);
+    void deleteNote(int id) {
+        noteRepository.delete(id);
     }
 }

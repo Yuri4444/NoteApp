@@ -8,7 +8,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 
 public class NoteRepositoryImpl implements NoteRepository {
 
@@ -24,20 +26,23 @@ public class NoteRepositoryImpl implements NoteRepository {
         return databaseManager.notes();
     }
 
+    public NoteUi noteById(int id) {
+        return databaseManager.noteById(id);
+    }
+
     @Override
     public void add(NoteUi noteUi) {
         databaseManager.add(noteUi);
     }
 
     @Override
-    public void update(String content) {
-
+    public void edit(NoteUi noteUi) {
+        databaseManager.update(noteUi);
     }
 
     @Override
-    public void remove(String content) {
-
+    public void delete(int id) {
+        databaseManager.delete(id);
     }
-
 
 }

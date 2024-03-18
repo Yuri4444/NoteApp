@@ -32,14 +32,6 @@ public class DatabaseManager {
         database = databaseHelper.getReadableDatabase();
     }
 
-    public void add(NoteUi noteUi) {
-        writeDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_NAME_CONTENT, noteUi.content);
-
-        database.insert(TABLE_NAME, null, values);
-    }
-
     public Observable<List<NoteUi>> notes() {
         readDatabase();
         ArrayList<NoteUi> newList = new ArrayList<>();
@@ -63,6 +55,60 @@ public class DatabaseManager {
         cursor.close();
 
         return Observable.fromCallable(() -> newList);
+    }
+
+    public NoteUi noteById(int id) {
+        readDatabase();
+
+        String selection = _ID + " = ?";
+        String[] selectionArgs = {String.valueOf(id)};
+
+        Cursor cursor = database.query(
+                TABLE_NAME,
+                null,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        NoteUi noteUi;
+        if (cursor.moveToFirst()) {
+            String itemContent = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME_CONTENT));
+            noteUi = new NoteUi(id, itemContent);
+        } else {
+            noteUi = null;
+        }
+        cursor.close();
+
+        return noteUi;
+    }
+
+    public void add(NoteUi noteUi) {
+        writeDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME_CONTENT, noteUi.content);
+
+        database.insert(TABLE_NAME, null, values);
+    }
+
+    public void update(NoteUi noteUi) {
+        writeDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME_CONTENT, noteUi.content);
+
+        String selection = _ID + " = ?";
+        String[] selectionArgs = {String.valueOf(noteUi.id)};
+
+        database.update(TABLE_NAME, values, selection, selectionArgs);
+    }
+
+    public void delete(int id) {
+        writeDatabase();
+        String selection = _ID + " = ?";
+        String[] selectionArgs = {String.valueOf(id)};
+        database.delete(TABLE_NAME, selection, selectionArgs);
     }
 
     public void close() {

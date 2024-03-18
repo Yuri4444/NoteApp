@@ -1,7 +1,6 @@
 package com.yuri_berezhnoy.noteapp.ui;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -30,14 +29,14 @@ public class NotesFragment extends AbsFragment<NotesViewModel, FragmentNotesBind
 
         NoteAdapter adapter = new NoteAdapter(
                 onEditClick -> {
-                    Log.e("RRR", "onEditClick " + onEditClick);
+
                 },
-                onDeleteClick -> {
-                    Log.e("RRR", "onDeleteClick " + onDeleteClick);
-                });
+                onDeleteClick -> viewModel.deleteNote(onDeleteClick)
+        );
+
         binding.rvNotes.setAdapter(adapter);
 
-        viewModel.notes.observe(getViewLifecycleOwner(), adapter::submitList);
+        viewModel.notes.observeForever( adapter::submitList);
 
         binding.fabNote.setOnClickListener(v -> {
             NoteDialogFragment dialog = new NoteDialogFragment();
