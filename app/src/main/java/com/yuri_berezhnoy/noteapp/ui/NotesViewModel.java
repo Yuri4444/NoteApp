@@ -28,6 +28,8 @@ public class NotesViewModel extends AbsViewModel {
     private final MutableLiveData<List<NoteUi>> mutableLiveDataNotes = new MutableLiveData<>();
     LiveData<List<NoteUi>> liveData = mutableLiveDataNotes;
 
+    public MutableLiveData<NoteUi> note = new MutableLiveData<>();
+
     void notes() {
         disposable.add(noteRepository.notes()
                 .subscribeOn(Schedulers.io())
@@ -42,5 +44,26 @@ public class NotesViewModel extends AbsViewModel {
 
     void deleteNote(int id) {
         noteRepository.delete(id);
+    }
+
+    public void add(NoteUi noteUi) {
+        noteRepository.add(noteUi);
+    }
+
+    public void update(NoteUi noteUi) {
+        noteRepository.update(noteUi);
+    }
+
+    public void fetchMyNoteById(int id) {
+        disposable.add(noteRepository.noteById(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        result -> note.setValue(result),
+                        error -> {
+
+                        }
+                )
+        );
     }
 }

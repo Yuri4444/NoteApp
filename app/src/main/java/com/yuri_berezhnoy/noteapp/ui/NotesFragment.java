@@ -9,10 +9,11 @@ import androidx.annotation.Nullable;
 import com.yuri_berezhnoy.noteapp.databinding.FragmentNotesBinding;
 import com.yuri_berezhnoy.noteapp.ui.base.fragment.AbsFragment;
 import com.yuri_berezhnoy.noteapp.ui.notes.NoteDialogFragment;
+import com.yuri_berezhnoy.noteapp.ui.notes.OnNoteActionListener;
 import com.yuri_berezhnoy.noteapp.ui.notes.adapter.NoteAdapter;
 import com.yuri_berezhnoy.noteapp.ui.notes.model.NoteUi;
 
-public class NotesFragment extends AbsFragment<NotesViewModel, FragmentNotesBinding> {
+public class NotesFragment extends AbsFragment<NotesViewModel, FragmentNotesBinding> implements OnNoteActionListener {
 
     NoteAdapter adapter;
 
@@ -31,7 +32,7 @@ public class NotesFragment extends AbsFragment<NotesViewModel, FragmentNotesBind
         super.onViewCreated(view, savedInstanceState);
 
         adapter = new NoteAdapter(
-                onEditClick -> NoteDialogFragment.newInstance(onEditClick).show(getChildFragmentManager(), ""),
+                (id, position) -> NoteDialogFragment.newInstance(id, position, this).show(getChildFragmentManager(), ""),
                 (id, position) -> {
                     viewModel.deleteNote(id);
                     removeItem(position);
@@ -40,21 +41,29 @@ public class NotesFragment extends AbsFragment<NotesViewModel, FragmentNotesBind
 
         binding.rvNotes.setAdapter(adapter);
 
-        viewModel.liveData.observe(getViewLifecycleOwner(),
-                adapter::submitList
+        viewModel.liveData.observe(getViewLifecycleOwner(), observer -> adapter.setData(observer));
+
+        binding.fabNote.setOnClickListener(v ->
+                NoteDialogFragment.newInstance(0, 0, this).show(getChildFragmentManager(), "")
         );
 
-        binding.fabNote.setOnClickListener(v -> NoteDialogFragment.newInstance(0).show(getChildFragmentManager(), ""));
+        viewModel.notes();
 
+
+    }
+
+    @Override
+    public void onNoteAdded(NoteUi noteUi) {
+        adapter.addItem(noteUi);
         viewModel.notes();
     }
 
-    private void addItem(NoteUi noteUi) {
-        adapter.addItem(noteUi);
+    @Override
+    public void onNoteUpdated(int position, NoteUi noteUi) {
+        adapter.updateItem(position, noteUi);
     }
 
     private void removeItem(int position) {
         adapter.removeItem(position);
     }
-
 }

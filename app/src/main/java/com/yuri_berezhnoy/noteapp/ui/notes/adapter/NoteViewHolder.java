@@ -60,7 +60,7 @@ public class NoteViewHolder extends RecyclerView.ViewHolder {
         popup.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         menuBinding.tvEdit.setOnClickListener(view -> {
-            onEditClick.onEditClick(id);
+            onEditClick.onEditClick(id, position);
             popup.dismiss();
         });
         menuBinding.tvDelete.setOnClickListener(view -> {

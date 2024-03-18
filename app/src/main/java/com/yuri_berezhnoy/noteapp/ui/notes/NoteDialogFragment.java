@@ -16,14 +16,21 @@ import androidx.annotation.Nullable;
 import com.yuri_berezhnoy.noteapp.R;
 import com.yuri_berezhnoy.noteapp.databinding.DialogNoteBinding;
 import com.yuri_berezhnoy.noteapp.databinding.FragmentNotesBinding;
+import com.yuri_berezhnoy.noteapp.ui.NotesViewModel;
 import com.yuri_berezhnoy.noteapp.ui.base.dialog.AbsDialogFragment;
 import com.yuri_berezhnoy.noteapp.ui.notes.model.NoteUi;
 
 import java.util.Objects;
+import java.util.Random;
 
-public class NoteDialogFragment extends AbsDialogFragment<NoteDialogViewModel, FragmentNotesBinding> {
+public class NoteDialogFragment extends AbsDialogFragment<NotesViewModel, FragmentNotesBinding> {
 
+    private final OnNoteActionListener mListener;
     private DialogNoteBinding binding;
+
+    public NoteDialogFragment(OnNoteActionListener listener) {
+        mListener = listener;
+    }
 
     @Override
     protected FragmentNotesBinding getViewBinding() {
@@ -31,8 +38,8 @@ public class NoteDialogFragment extends AbsDialogFragment<NoteDialogViewModel, F
     }
 
     @Override
-    protected Class<NoteDialogViewModel> provideViewModelClass() {
-        return NoteDialogViewModel.class;
+    protected Class<NotesViewModel> provideViewModelClass() {
+        return NotesViewModel.class;
     }
 
     @Nullable
@@ -47,6 +54,7 @@ public class NoteDialogFragment extends AbsDialogFragment<NoteDialogViewModel, F
         super.onViewCreated(view, savedInstanceState);
 
         int id = getArguments().getInt(ID_NOTE);
+        int position = getArguments().getInt(POSITION_NOTE);
 
         viewModel.note.observe(getViewLifecycleOwner(), observer -> {
             binding.etContent.setText(observer.content);
@@ -55,12 +63,16 @@ public class NoteDialogFragment extends AbsDialogFragment<NoteDialogViewModel, F
         binding.btnSave.setOnClickListener(v -> {
             String inputContent = binding.etContent.getText().toString();
             if (inputContent.isBlank()) {
-                Toast.makeText(getContext(), "Please enter text", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), R.string.please_enter_text, Toast.LENGTH_LONG).show();
             } else if (id == 0) {
-                viewModel.add(new NoteUi(0, binding.etContent.getText().toString()));
+                Random random = new Random();
+                int noteId = random.nextInt();
+                viewModel.add(new NoteUi(noteId, binding.etContent.getText().toString()));
+                mListener.onNoteAdded(new NoteUi(noteId, binding.etContent.getText().toString()));
                 dismiss();
             } else {
                 viewModel.update(new NoteUi(id, binding.etContent.getText().toString()));
+                mListener.onNoteUpdated(position, new NoteUi(id, binding.etContent.getText().toString()));
                 dismiss();
             }
         });
@@ -83,11 +95,13 @@ public class NoteDialogFragment extends AbsDialogFragment<NoteDialogViewModel, F
     }
 
     private static final String ID_NOTE = "id_note";
+    private static final String POSITION_NOTE = "position_note";
 
-    public static NoteDialogFragment newInstance(int id) {
-        NoteDialogFragment noteDialogFragment = new NoteDialogFragment();
+    public static NoteDialogFragment newInstance(int id, int position, OnNoteActionListener listener) {
+        NoteDialogFragment noteDialogFragment = new NoteDialogFragment(listener);
         Bundle bundle = new Bundle();
         bundle.putInt(ID_NOTE, id);
+        bundle.putInt(POSITION_NOTE, position);
         noteDialogFragment.setArguments(bundle);
         return noteDialogFragment;
     }
