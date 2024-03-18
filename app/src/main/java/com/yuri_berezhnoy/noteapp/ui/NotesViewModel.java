@@ -1,5 +1,6 @@
 package com.yuri_berezhnoy.noteapp.ui;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.yuri_berezhnoy.noteapp.domain.NoteRepository;
@@ -24,14 +25,15 @@ public class NotesViewModel extends AbsViewModel {
         this.noteRepository = noteRepository;
     }
 
-    public MutableLiveData<List<NoteUi>> notes = new MutableLiveData<>();
+    private final MutableLiveData<List<NoteUi>> mutableLiveDataNotes = new MutableLiveData<>();
+    LiveData<List<NoteUi>> liveData = mutableLiveDataNotes;
 
     void notes() {
         disposable.add(noteRepository.notes()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        result -> notes.setValue(result),
+                        mutableLiveDataNotes::setValue,
                         error -> {
 
                         })

@@ -26,23 +26,22 @@ public class NoteViewHolder extends RecyclerView.ViewHolder {
     }
 
     void bind(NoteUi item,
+              int position,
               NoteAdapter.OnEditClickListener onEditClickListener,
               NoteAdapter.OnDeleteClickListener onDeleteClickListener
     ) {
         binding.tvContent.setText(item.content);
-
-        binding.ivMenu.setOnClickListener(v -> {
-            showPopup(
-                    binding.ivMenu,
-                    this.binding.getRoot().getWidth(),
-                    item.id,
-                    onEditClickListener,
-                    onDeleteClickListener
-            );
-        });
+        binding.ivMenu.setOnClickListener(v -> showPopup(
+                position,
+                binding.ivMenu,
+                binding.getRoot().getWidth(),
+                item.id,
+                onEditClickListener,
+                onDeleteClickListener
+        ));
     }
 
-    public void showPopup(ImageView ivMenu, int parentWidth, int id,
+    public void showPopup(int position, ImageView ivMenu, int parentWidth, int id,
                           NoteAdapter.OnEditClickListener onEditClick,
                           NoteAdapter.OnDeleteClickListener onDeleteClick) {
         int[] loc = new int[2];
@@ -65,7 +64,7 @@ public class NoteViewHolder extends RecyclerView.ViewHolder {
             popup.dismiss();
         });
         menuBinding.tvDelete.setOnClickListener(view -> {
-            onDeleteClick.onDeleteClick(id);
+            onDeleteClick.onDeleteClick(id, position);
             popup.dismiss();
         });
 

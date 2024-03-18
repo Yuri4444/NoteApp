@@ -10,8 +10,11 @@ import com.yuri_berezhnoy.noteapp.databinding.FragmentNotesBinding;
 import com.yuri_berezhnoy.noteapp.ui.base.fragment.AbsFragment;
 import com.yuri_berezhnoy.noteapp.ui.notes.NoteDialogFragment;
 import com.yuri_berezhnoy.noteapp.ui.notes.adapter.NoteAdapter;
+import com.yuri_berezhnoy.noteapp.ui.notes.model.NoteUi;
 
 public class NotesFragment extends AbsFragment<NotesViewModel, FragmentNotesBinding> {
+
+    NoteAdapter adapter;
 
     @Override
     protected FragmentNotesBinding getViewBinding() {
@@ -27,21 +30,31 @@ public class NotesFragment extends AbsFragment<NotesViewModel, FragmentNotesBind
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        NoteAdapter adapter = new NoteAdapter(
+        adapter = new NoteAdapter(
                 onEditClick -> NoteDialogFragment.newInstance(onEditClick).show(getChildFragmentManager(), ""),
-                onDeleteClick -> viewModel.deleteNote(onDeleteClick)
+                (id, position) -> {
+                    viewModel.deleteNote(id);
+                    removeItem(position);
+                }
         );
 
         binding.rvNotes.setAdapter(adapter);
 
-        viewModel.notes.observe(getViewLifecycleOwner(), observer -> {
-            adapter.submitList(observer);
-        });
+        viewModel.liveData.observe(getViewLifecycleOwner(),
+                adapter::submitList
+        );
 
-        binding.fabNote.setOnClickListener(v -> {
-            NoteDialogFragment.newInstance(0).show(getChildFragmentManager(), "");
-        });
+        binding.fabNote.setOnClickListener(v -> NoteDialogFragment.newInstance(0).show(getChildFragmentManager(), ""));
 
         viewModel.notes();
     }
+
+    private void addItem(NoteUi noteUi) {
+        adapter.addItem(noteUi);
+    }
+
+    private void removeItem(int position) {
+        adapter.removeItem(position);
+    }
+
 }

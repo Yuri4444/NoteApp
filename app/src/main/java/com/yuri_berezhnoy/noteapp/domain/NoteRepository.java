@@ -4,6 +4,7 @@ import com.yuri_berezhnoy.noteapp.ui.notes.model.NoteUi;
 
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
