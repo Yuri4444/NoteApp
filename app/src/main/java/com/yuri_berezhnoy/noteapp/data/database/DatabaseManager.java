@@ -10,10 +10,11 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.yuri_berezhnoy.noteapp.ui.notes.model.NoteUi;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 
 public class DatabaseManager {
     private final DatabaseHelper databaseHelper;
@@ -34,7 +35,7 @@ public class DatabaseManager {
 
     public Observable<List<NoteUi>> notes() {
         readDatabase();
-        ArrayList<NoteUi> newList = new ArrayList<>();
+        LinkedList<NoteUi> newList = new LinkedList<>();
 
         Cursor cursor = database.query(
                 TABLE_NAME,
@@ -50,14 +51,14 @@ public class DatabaseManager {
             int itemId = cursor.getInt(cursor.getColumnIndexOrThrow(_ID));
             String itemContent = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME_CONTENT));
             NoteUi noteUi = new NoteUi(itemId, itemContent);
-            newList.add(noteUi);
+            newList.add(0, noteUi);
         }
         cursor.close();
 
         return Observable.fromCallable(() -> newList);
     }
 
-    public NoteUi noteById(int id) {
+    public Single<NoteUi> noteById(int id) {
         readDatabase();
 
         String selection = _ID + " = ?";
@@ -82,7 +83,7 @@ public class DatabaseManager {
         }
         cursor.close();
 
-        return noteUi;
+        return Single.fromCallable(() -> noteUi);
     }
 
     public void add(NoteUi noteUi) {
@@ -96,6 +97,7 @@ public class DatabaseManager {
     public void update(NoteUi noteUi) {
         writeDatabase();
         ContentValues values = new ContentValues();
+        values.put(_ID, noteUi.id);
         values.put(COLUMN_NAME_CONTENT, noteUi.content);
 
         String selection = _ID + " = ?";

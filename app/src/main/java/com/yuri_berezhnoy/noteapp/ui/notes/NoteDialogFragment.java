@@ -16,7 +16,6 @@ import androidx.annotation.Nullable;
 import com.yuri_berezhnoy.noteapp.R;
 import com.yuri_berezhnoy.noteapp.databinding.DialogNoteBinding;
 import com.yuri_berezhnoy.noteapp.databinding.FragmentNotesBinding;
-import com.yuri_berezhnoy.noteapp.ui.NotesViewModel;
 import com.yuri_berezhnoy.noteapp.ui.base.dialog.AbsDialogFragment;
 import com.yuri_berezhnoy.noteapp.ui.notes.model.NoteUi;
 
@@ -47,13 +46,22 @@ public class NoteDialogFragment extends AbsDialogFragment<NoteDialogViewModel, F
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        int id = getArguments().getInt(ID_NOTE);
+
+        viewModel.note.observe(getViewLifecycleOwner(), observer -> {
+            binding.etContent.setText(observer.content);
+        });
+
         binding.btnSave.setOnClickListener(v -> {
             String inputContent = binding.etContent.getText().toString();
-            if (!inputContent.isBlank()) {
+            if (inputContent.isBlank()) {
+                Toast.makeText(getContext(), "Please enter text", Toast.LENGTH_LONG).show();
+            } else if (id == 0) {
                 viewModel.add(new NoteUi(0, binding.etContent.getText().toString()));
                 dismiss();
             } else {
-                Toast.makeText(getContext(), "Please enter text", Toast.LENGTH_LONG).show();
+                viewModel.update(new NoteUi(id, binding.etContent.getText().toString()));
+                dismiss();
             }
         });
 
@@ -67,5 +75,21 @@ public class NoteDialogFragment extends AbsDialogFragment<NoteDialogViewModel, F
             window.setLayout((int) percentWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
             window.setBackgroundDrawableResource(R.drawable.dialog_rounded_bg);
         }
+
+        if (id != 0) {
+            binding.tvTitle.setText(R.string.update_your_note);
+            viewModel.fetchMyNoteById(id);
+        }
     }
+
+    private static final String ID_NOTE = "id_note";
+
+    public static NoteDialogFragment newInstance(int id) {
+        NoteDialogFragment noteDialogFragment = new NoteDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(ID_NOTE, id);
+        noteDialogFragment.setArguments(bundle);
+        return noteDialogFragment;
+    }
+
 }

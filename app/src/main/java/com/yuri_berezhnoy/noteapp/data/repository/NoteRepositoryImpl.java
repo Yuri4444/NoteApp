@@ -8,7 +8,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
@@ -26,7 +25,7 @@ public class NoteRepositoryImpl implements NoteRepository {
         return databaseManager.notes();
     }
 
-    public NoteUi noteById(int id) {
+    public Single<NoteUi> noteById(int id) {
         return databaseManager.noteById(id);
     }
 
@@ -36,7 +35,7 @@ public class NoteRepositoryImpl implements NoteRepository {
     }
 
     @Override
-    public void edit(NoteUi noteUi) {
+    public void update(NoteUi noteUi) {
         databaseManager.update(noteUi);
     }
 
