@@ -16,9 +16,8 @@ import androidx.annotation.Nullable;
 import com.yuri_berezhnoy.noteapp.R;
 import com.yuri_berezhnoy.noteapp.databinding.DialogNoteBinding;
 import com.yuri_berezhnoy.noteapp.databinding.FragmentNotesBinding;
-import com.yuri_berezhnoy.noteapp.ui.NotesViewModel;
 import com.yuri_berezhnoy.noteapp.ui.base.dialog.AbsDialogFragment;
-import com.yuri_berezhnoy.noteapp.ui.notes.model.NoteUi;
+import com.yuri_berezhnoy.noteapp.ui.notes.model.Note;
 
 import java.util.Objects;
 import java.util.Random;
@@ -67,12 +66,12 @@ public class NoteDialogFragment extends AbsDialogFragment<NotesViewModel, Fragme
             } else if (id == 0) {
                 Random random = new Random();
                 int noteId = random.nextInt();
-                viewModel.add(new NoteUi(noteId, binding.etContent.getText().toString()));
-                mListener.onNoteAdded(new NoteUi(noteId, binding.etContent.getText().toString()));
+                viewModel.add(new Note(noteId, binding.etContent.getText().toString()));
+                mListener.onNoteAdded(new Note(noteId, binding.etContent.getText().toString()));
                 dismiss();
             } else {
-                viewModel.update(new NoteUi(id, binding.etContent.getText().toString()));
-                mListener.onNoteUpdated(position, new NoteUi(id, binding.etContent.getText().toString()));
+                viewModel.update(new Note(id, binding.etContent.getText().toString()));
+                mListener.onNoteUpdated(position, new Note(id, binding.etContent.getText().toString()));
                 dismiss();
             }
         });
@@ -90,7 +89,7 @@ public class NoteDialogFragment extends AbsDialogFragment<NotesViewModel, Fragme
 
         if (id != 0) {
             binding.tvTitle.setText(R.string.update_your_note);
-            viewModel.fetchMyNoteById(id);
+            viewModel.fetchNoteById(id);
         }
     }
 

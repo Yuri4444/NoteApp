@@ -2,7 +2,7 @@ package com.yuri_berezhnoy.noteapp.di;
 
 import com.yuri_berezhnoy.noteapp.data.database.DatabaseManager;
 import com.yuri_berezhnoy.noteapp.data.repository.NoteRepositoryImpl;
-import com.yuri_berezhnoy.noteapp.domain.NoteRepository;
+import com.yuri_berezhnoy.noteapp.data.repository.NoteRepository;
 
 import javax.inject.Singleton;
 

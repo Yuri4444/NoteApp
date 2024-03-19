@@ -1,6 +1,6 @@
 package com.yuri_berezhnoy.noteapp.di.ui;
 
-import com.yuri_berezhnoy.noteapp.ui.NotesFragment;
+import com.yuri_berezhnoy.noteapp.ui.notes.NotesFragment;
 import com.yuri_berezhnoy.noteapp.ui.notes.NoteDialogFragment;
 
 import dagger.Module;

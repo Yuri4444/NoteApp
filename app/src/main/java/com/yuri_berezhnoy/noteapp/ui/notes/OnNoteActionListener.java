@@ -1,8 +1,8 @@
 package com.yuri_berezhnoy.noteapp.ui.notes;
 
-import com.yuri_berezhnoy.noteapp.ui.notes.model.NoteUi;
+import com.yuri_berezhnoy.noteapp.ui.notes.model.Note;
 
 public interface OnNoteActionListener {
-    void onNoteAdded(NoteUi noteUi);
-    void onNoteUpdated(int position, NoteUi noteUi);
+    void onNoteAdded(Note note);
+    void onNoteUpdated(int position, Note note);
 }

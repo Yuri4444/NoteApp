@@ -1,11 +1,11 @@
-package com.yuri_berezhnoy.noteapp.ui;
+package com.yuri_berezhnoy.noteapp.ui.notes;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.yuri_berezhnoy.noteapp.domain.NoteRepository;
+import com.yuri_berezhnoy.noteapp.data.repository.NoteRepository;
 import com.yuri_berezhnoy.noteapp.ui.base.AbsViewModel;
-import com.yuri_berezhnoy.noteapp.ui.notes.model.NoteUi;
+import com.yuri_berezhnoy.noteapp.ui.notes.model.Note;
 
 import java.util.List;
 
@@ -25,10 +25,10 @@ public class NotesViewModel extends AbsViewModel {
         this.noteRepository = noteRepository;
     }
 
-    private final MutableLiveData<List<NoteUi>> mutableLiveDataNotes = new MutableLiveData<>();
-    LiveData<List<NoteUi>> liveData = mutableLiveDataNotes;
+    private final MutableLiveData<List<Note>> mutableLiveDataNotes = new MutableLiveData<>();
+    LiveData<List<Note>> liveData = mutableLiveDataNotes;
 
-    public MutableLiveData<NoteUi> note = new MutableLiveData<>();
+    MutableLiveData<Note> note = new MutableLiveData<>();
 
     void notes() {
         disposable.add(noteRepository.notes()
@@ -46,15 +46,15 @@ public class NotesViewModel extends AbsViewModel {
         noteRepository.delete(id);
     }
 
-    public void add(NoteUi noteUi) {
-        noteRepository.add(noteUi);
+    void add(Note note) {
+        noteRepository.add(note);
     }
 
-    public void update(NoteUi noteUi) {
-        noteRepository.update(noteUi);
+    void update(Note note) {
+        noteRepository.update(note);
     }
 
-    public void fetchMyNoteById(int id) {
+    void fetchNoteById(int id) {
         disposable.add(noteRepository.noteById(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

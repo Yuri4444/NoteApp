@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yuri_berezhnoy.noteapp.databinding.ItemNoteBinding;
 import com.yuri_berezhnoy.noteapp.databinding.MenuMyQuotePopupBinding;
-import com.yuri_berezhnoy.noteapp.ui.notes.model.NoteUi;
+import com.yuri_berezhnoy.noteapp.ui.notes.model.Note;
 
 public class NoteViewHolder extends RecyclerView.ViewHolder {
 
@@ -25,7 +25,7 @@ public class NoteViewHolder extends RecyclerView.ViewHolder {
         this.binding = binding;
     }
 
-    void bind(NoteUi item,
+    void bind(Note item,
               int position,
               NoteAdapter.OnEditClickListener onEditClickListener,
               NoteAdapter.OnDeleteClickListener onDeleteClickListener

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Нотатки</string>
+    <string name="add_note">Додати замiтку</string>
+    <string name="add_new_note">Додати нову замiтку</string>
+    <string name="update_your_note">Додати замiтку</string>
+    <string name="edit">Редагувати</string>
+    <string name="remove">Видалити</string>
+    <string name="please_enter_text">Будь ласка, введіть текст</string>
+</resources>

@@ -8,7 +8,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.yuri_berezhnoy.noteapp.ui.notes.model.NoteUi;
+import com.yuri_berezhnoy.noteapp.ui.notes.model.Note;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -33,9 +33,9 @@ public class DatabaseManager {
         database = databaseHelper.getReadableDatabase();
     }
 
-    public Observable<List<NoteUi>> notes() {
+    public Observable<List<Note>> notes() {
         readDatabase();
-        LinkedList<NoteUi> newList = new LinkedList<>();
+        LinkedList<Note> newList = new LinkedList<>();
 
         Cursor cursor = database.query(
                 TABLE_NAME,
@@ -50,15 +50,15 @@ public class DatabaseManager {
         while (cursor.moveToNext()) {
             int itemId = cursor.getInt(cursor.getColumnIndexOrThrow(_ID));
             String itemContent = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME_CONTENT));
-            NoteUi noteUi = new NoteUi(itemId, itemContent);
-            newList.add(0, noteUi);
+            Note note = new Note(itemId, itemContent);
+            newList.add(0, note);
         }
         cursor.close();
 
         return Observable.fromCallable(() -> newList);
     }
 
-    public Single<NoteUi> noteById(int id) {
+    public Single<Note> noteById(int id) {
         readDatabase();
 
         String selection = _ID + " = ?";
@@ -74,34 +74,34 @@ public class DatabaseManager {
                 null
         );
 
-        NoteUi noteUi;
+        Note note;
         if (cursor.moveToFirst()) {
             String itemContent = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME_CONTENT));
-            noteUi = new NoteUi(id, itemContent);
+            note = new Note(id, itemContent);
         } else {
-            noteUi = null;
+            note = null;
         }
         cursor.close();
 
-        return Single.fromCallable(() -> noteUi);
+        return Single.fromCallable(() -> note);
     }
 
-    public void add(NoteUi noteUi) {
+    public void add(Note note) {
         writeDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_NAME_CONTENT, noteUi.content);
+        values.put(COLUMN_NAME_CONTENT, note.content);
 
         database.insert(TABLE_NAME, null, values);
     }
 
-    public void update(NoteUi noteUi) {
+    public void update(Note note) {
         writeDatabase();
         ContentValues values = new ContentValues();
-        values.put(_ID, noteUi.id);
-        values.put(COLUMN_NAME_CONTENT, noteUi.content);
+        values.put(_ID, note.id);
+        values.put(COLUMN_NAME_CONTENT, note.content);
 
         String selection = _ID + " = ?";
-        String[] selectionArgs = {String.valueOf(noteUi.id)};
+        String[] selectionArgs = {String.valueOf(note.id)};
 
         database.update(TABLE_NAME, values, selection, selectionArgs);
     }
@@ -111,9 +111,5 @@ public class DatabaseManager {
         String selection = _ID + " = ?";
         String[] selectionArgs = {String.valueOf(id)};
         database.delete(TABLE_NAME, selection, selectionArgs);
-    }
-
-    public void close() {
-        databaseHelper.close();
     }
 }

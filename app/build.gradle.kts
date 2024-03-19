@@ -37,6 +37,7 @@ android {
 
 dependencies {
 
+    //Core
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -51,15 +52,13 @@ dependencies {
     implementation(libs.rxjava)
 
     //Dagger2
-//    implementation(libs.android.hilt)
-//    annotationProcessor(libs.android.hilt.compiler)
-
     implementation(libs.dagger)
     annotationProcessor(libs.dagger.compiler)
     implementation(libs.dagger.android)
     implementation(libs.dagger.android.support)
     annotationProcessor(libs.dagger.android.processor)
 
+    //Lifecycle
     implementation(libs.lifecycle.extensions)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.common.java8)

@@ -40,6 +40,14 @@ This application is designed with potential for expansion and addition of new fe
 - Improving the user interface for a better user experience.
 - Implementing a search and filtering feature for notes.
 
+## Note
+
+This application is not large in scale, and therefore, I decided not to include a domain layer for simplicity.
+
+## Language Support
+
+The application supports English and Ukrainian languages.
+
 ## Contact
 
 If you have any questions or suggestions for improving the application, please feel free to contact me:

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yuri_berezhnoy.noteapp.R;
 import com.yuri_berezhnoy.noteapp.databinding.ItemNoteBinding;
-import com.yuri_berezhnoy.noteapp.ui.notes.model.NoteUi;
+import com.yuri_berezhnoy.noteapp.ui.notes.model.Note;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +18,14 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteViewHolder> {
 
     private final OnEditClickListener onEditClickListener;
     private final OnDeleteClickListener onDeleteClickListener;
-    ArrayList<NoteUi> currentList = new ArrayList<>();
+    ArrayList<Note> currentList = new ArrayList<>();
 
-    public void setData(List<NoteUi> newList) {
-        currentList.clear();
-        currentList.addAll(newList);
-        notifyDataSetChanged();
+    public NoteAdapter(
+            OnEditClickListener onEditClickListener,
+            OnDeleteClickListener onDeleteClickListener
+    ) {
+        this.onEditClickListener = onEditClickListener;
+        this.onDeleteClickListener = onDeleteClickListener;
     }
 
     public interface OnEditClickListener {
@@ -34,26 +36,24 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteViewHolder> {
         void onDeleteClick(int id, int position);
     }
 
-    public void addItem(NoteUi noteUi) {
-        currentList.add(noteUi);
+    public void setData(List<Note> newList) {
+        currentList.clear();
+        currentList.addAll(newList);
+        notifyDataSetChanged();
     }
 
-    public void updateItem(int position, NoteUi updatedNoteUi) {
-        currentList.set(position, updatedNoteUi);
+    public void addItem(Note note) {
+        currentList.add(note);
+    }
+
+    public void updateItem(int position, Note updatedNote) {
+        currentList.set(position, updatedNote);
         notifyDataSetChanged();
     }
 
     public void removeItem(int position) {
         currentList.remove(position);
         notifyDataSetChanged();
-    }
-
-    public NoteAdapter(
-            OnEditClickListener onEditClickListener,
-            OnDeleteClickListener onDeleteClickListener
-    ) {
-        this.onEditClickListener = onEditClickListener;
-        this.onDeleteClickListener = onDeleteClickListener;
     }
 
     @Override
